@@ -47,7 +47,7 @@ export default async function userHandler(
       switch (action) {
         case "SUBSCRIBED": {
           const result = await axios.post(
-            `https://cloud.donus.org/api/forms/v0/submit/members/${GREENKOREA_DONUS_FORM_KEY}}`,
+            `https://cloud.donus.org/api/forms/v0/submit/members/${GREENKOREA_DONUS_FORM_KEY}`,
             {
               updateOnMatch: true,
               updateNameOnMatch: false,
@@ -68,7 +68,7 @@ export default async function userHandler(
         }
         case "PURGED": {
           //   const result = await axios.post(
-          //     `https://cloud.donus.org/api/forms/v0/submit/members/${GREENKOREA_DONUS_FORM_KEY}}`,
+          //     `https://cloud.donus.org/api/forms/v0/submit/members/${GREENKOREA_DONUS_FORM_KEY}`,
           //     {
           //       body: {
           //         members: [
