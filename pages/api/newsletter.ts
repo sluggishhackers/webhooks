@@ -49,18 +49,16 @@ export default async function userHandler(
           const result = await axios.post(
             `https://cloud.donus.org/api/forms/v0/submit/members/${GREENKOREA_DONUS_FORM_KEY}}`,
             {
-              body: {
-                updateOnMatch: true,
-                updateNameOnMatch: false,
-                members: [
-                  {
-                    name: subscribers[0].name,
-                    cellphone: subscribers[0].name,
-                    email: subscribers[0].email,
-                    memo: "Green Korea Newsletter",
-                  },
-                ],
-              },
+              updateOnMatch: true,
+              updateNameOnMatch: false,
+              members: [
+                {
+                  name: subscribers[0].name,
+                  cellphone: subscribers[0].name,
+                  email: subscribers[0].email,
+                  memo: "Green Korea Newsletter",
+                },
+              ],
             }
           );
 
