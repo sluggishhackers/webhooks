@@ -54,7 +54,7 @@ export default async function userHandler(
               members: [
                 {
                   name: subscribers[0].name,
-                  cellphone: subscribers[0].name,
+                  //   cellphone: subscribers[0].mobile,
                   email: subscribers[0].email,
                   memo: "Green Korea Newsletter",
                 },
