@@ -1,13 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { User } from "../../../interfaces";
 
-export default function userHandler(
-  req: NextApiRequest,
-  res: NextApiResponse<User>
-) {
-  const { query, method, body } = req;
-  const id = parseInt(query.id as string, 10);
-  const name = query.name as string;
+export default function userHandler(req: NextApiRequest, res: NextApiResponse) {
+  const { method, body } = req;
 
   console.log(body);
 
