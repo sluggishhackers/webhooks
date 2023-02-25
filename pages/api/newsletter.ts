@@ -35,7 +35,6 @@ export default async function userHandler(
    * actionType: 'MANUAL',
    * subscribers: [ { email: 'hoony@chainlogis.co.kr' } ]}
    */
-  console.log(body);
 
   if (body.subscribers[0].email !== "hoonyland.newsletter@gmail.com") {
     res.status(200).json({});
@@ -49,8 +48,7 @@ export default async function userHandler(
           const result = await axios.post(
             `https://cloud.donus.org/api/forms/v0/submit/members/${GREENKOREA_DONUS_FORM_KEY}`,
             {
-              updateOnMatch: true,
-              updateNameOnMatch: false,
+              updateOnMatch: false,
               members: [
                 {
                   name: subscribers[0].name,
