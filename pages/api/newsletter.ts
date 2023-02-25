@@ -62,7 +62,22 @@ export default async function userHandler(
             }
           );
 
-          console.log(result);
+          const member = result.data.members[0];
+
+          const result2 = await axios.post(
+            `https://cloud.donus.org/api/forms/v0/submit/interact/${GREENKOREA_DONUS_FORM_KEY}`,
+            {
+              memberIdx: member.memberIdx,
+              interactTypeCode: "GEN",
+              interactDate: "2023-02-25",
+              interactCategoryCode: "E4",
+              interactChannelCode: "AC903",
+              title: "테스트!",
+              description: "활동기록 내용",
+            }
+          );
+
+          console.log(result2);
 
           break;
         }
