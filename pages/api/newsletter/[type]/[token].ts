@@ -119,9 +119,7 @@ export default async function userHandler(
 
           const member = result.data.members[0];
 
-          console.log("member: ", member);
-
-          const resultForInteract = await submitInteract({
+          await submitInteract({
             formKey: GREENKOREA_DONUS_FORM_KEY,
             memberIdx: member.memberIdx,
             interactTypeCode: INTERACT_TYPE_CODE.PARTICIPATION,
@@ -136,46 +134,44 @@ export default async function userHandler(
             description: `구독자 이름 ${subscribers[0].name}`,
           });
 
-          console.log(resultForInteract);
-
           break;
         }
-        case "UNSUBSCRIBED": {
-          console.log(action);
-          console.log(subscribers);
-          const result = await submitMember({
-            formKey,
-            updateOnMatch: false,
-            members: [
-              {
-                name: subscribers[0].name,
-                email: subscribers[0].email,
-                memo: "Green Korea Newsletter",
-              },
-            ],
-          });
+        // case "UNSUBSCRIBED": {
+        //   console.log(action);
+        //   console.log(subscribers);
+        //   const result = await submitMember({
+        //     formKey,
+        //     updateOnMatch: false,
+        //     members: [
+        //       {
+        //         name: subscribers[0].name,
+        //         email: subscribers[0].email,
+        //         memo: "Green Korea Newsletter",
+        //       },
+        //     ],
+        //   });
 
-          const member = result.data.members[0];
+        //   const member = result.data.members[0];
 
-          await submitInteract({
-            formKey: GREENKOREA_DONUS_FORM_KEY,
-            memberIdx: member.memberIdx,
-            interactTypeCode: INTERACT_TYPE_CODE.PARTICIPATION,
-            interactDate: formatInTimeZone(
-              new Date(),
-              "Asia/Seoul",
-              "yyyy-MM-dd"
-            ),
-            interactCategoryCode: newsletterCode,
-            interactChannelCode: INTERACT_CHANNEL_CODE.EMAIL,
-            title: `${newsletterTitle} 구독취소`,
-            description: `구독자 이름 ${subscribers[0].name}\n구독취소 사유: ${
-              subscribers[0].$unsubscribe_reason || ""
-            }\n구독취소 주체: ${body.eventOccuredBy}`,
-          });
+        //   await submitInteract({
+        //     formKey: GREENKOREA_DONUS_FORM_KEY,
+        //     memberIdx: member.memberIdx,
+        //     interactTypeCode: INTERACT_TYPE_CODE.PARTICIPATION,
+        //     interactDate: formatInTimeZone(
+        //       new Date(),
+        //       "Asia/Seoul",
+        //       "yyyy-MM-dd"
+        //     ),
+        //     interactCategoryCode: newsletterCode,
+        //     interactChannelCode: INTERACT_CHANNEL_CODE.EMAIL,
+        //     title: `${newsletterTitle} 구독취소`,
+        //     description: `구독자 이름 ${subscribers[0].name}\n구독취소 사유: ${
+        //       subscribers[0].$unsubscribe_reason || ""
+        //     }\n구독취소 주체: ${body.eventOccuredBy}`,
+        //   });
 
-          break;
-        }
+        //   break;
+        // }
       }
 
       res.status(200).json({ message: "SUCCESS!" });
