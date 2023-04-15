@@ -1,20 +1,20 @@
 import axios from "axios";
 
 export enum INTERACT_CHANNEL_CODE {
-  CAMPAIGN = "A003",
-  FACEBOOK = "A004",
-  CHANNEL_TALK = "A005",
-  PHONE = "A008",
-  TWITTER = "A009",
-  CMS = "A902",
-  EVENT = "A903",
-  EMAIL = "A904",
-  SMS = "A905",
-  ALIMTALK = "A906",
-  FRIEND_TALK = "A907",
-  CTI = "A909",
-  PAYMENT_PAGE = "A910",
-  MY_PAGE = "A911",
+  CAMPAIGN = "AC003",
+  FACEBOOK = "AC004",
+  CHANNEL_TALK = "AC005",
+  PHONE = "AC008",
+  TWITTER = "AC009",
+  CMS = "AC902",
+  EVENT = "AC903",
+  EMAIL = "AC904",
+  SMS = "AC905",
+  ALIMTALK = "AC906",
+  FRIEND_TALK = "AC907",
+  CTI = "AC909",
+  PAYMENT_PAGE = "AC910",
+  MY_PAGE = "AC911",
 }
 
 export enum INTERACT_TYPE_CODE {
