@@ -119,7 +119,9 @@ export default async function userHandler(
 
           const member = result.data.members[0];
 
-          await submitInteract({
+          console.log("member: ", member);
+
+          const resultForInteract = await submitInteract({
             formKey: GREENKOREA_DONUS_FORM_KEY,
             memberIdx: member.memberIdx,
             interactTypeCode: INTERACT_TYPE_CODE.PARTICIPATION,
@@ -133,6 +135,8 @@ export default async function userHandler(
             title: `${newsletterTitle} 구독신청`,
             description: `구독자 이름 ${subscribers[0].name}`,
           });
+
+          console.log(resultForInteract);
 
           break;
         }
