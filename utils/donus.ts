@@ -19,7 +19,7 @@ export enum INTERACT_CHANNEL_CODE {
 
 export enum INTERACT_TYPE_CODE {
   GENERAL = "GEN",
-  PARTICIPATION = "MSG",
+  PARTICIPATION = "ENG",
 }
 
 type Member = {
