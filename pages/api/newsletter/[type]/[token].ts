@@ -141,6 +141,8 @@ export default async function userHandler(
           break;
         }
         case "UNSUBSCRIBED": {
+          console.log(action);
+          console.log(subscribers);
           const result = await submitMember({
             formKey,
             updateOnMatch: false,
