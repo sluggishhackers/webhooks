@@ -128,7 +128,7 @@ export default async function userHandler(
             interactDate: formatInTimeZone(
               new Date(),
               "Asia/Seoul",
-              "YYYY-MM-DD"
+              "yyyy-MM-dd"
             ),
             interactCategoryCode: newsletterCode,
             interactChannelCode: INTERACT_CHANNEL_CODE.EMAIL,
@@ -162,7 +162,7 @@ export default async function userHandler(
             interactDate: formatInTimeZone(
               new Date(),
               "Asia/Seoul",
-              "YYYY-MM-DD"
+              "yyyy-MM-dd"
             ),
             interactCategoryCode: newsletterCode,
             interactChannelCode: INTERACT_CHANNEL_CODE.EMAIL,
