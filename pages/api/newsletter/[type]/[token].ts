@@ -1,9 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Webhook as StibeeWebhook } from "../../../../utils/stibee";
-import { INTERACT_CHANNEL_CODE, INTERACT_TYPE_CODE } from "@/utils/donus";
+import { Webhook as StibeeWebhook } from "@/utils/stibee";
 import { Partner } from "@/partners";
 import { submitMember, submitInteract } from "@/partners/donus";
 import {
+  INTERACT_CHANNELS,
+  INTERACT_TYPES,
+  getDonusInteractChannelCode,
+  getDonusInteractTypeCode,
   getDonusNewsletterCodeByPartner,
   getDonusNewsletterTitleByPartner,
 } from "@/partners/constants";
@@ -109,12 +112,18 @@ export default async function userHandler(
 
           await submitInteract({
             partner,
-            formKey: GREENKOREA_DONUS_FORM_KEY,
+            formKey,
             body: {
               memberIdx: member.memberIdx,
-              interactTypeCode: INTERACT_TYPE_CODE.PARTICIPATION,
+              interactTypeCode: getDonusInteractTypeCode({
+                partner,
+                interactType: INTERACT_TYPES.PARTICIPATION,
+              }),
               interactCategoryCode: newsletterCode,
-              interactChannelCode: INTERACT_CHANNEL_CODE.EMAIL,
+              interactChannelCode: getDonusInteractChannelCode({
+                partner,
+                interactChannel: INTERACT_CHANNELS.EMAIL,
+              }),
               newsletterTitle: newsletterTitle,
               subscriberName: subscribers[0].name,
             },
