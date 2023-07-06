@@ -58,10 +58,10 @@ export const submitInteract = async ({
 }: {
   formKey: string;
   memberIdx: string;
-  interactTypeCode: INTERACT_TYPE_CODE;
+  interactTypeCode: string;
   interactDate: string;
   interactCategoryCode: string;
-  interactChannelCode: INTERACT_CHANNEL_CODE;
+  interactChannelCode: string;
   title: string;
   description: string;
 }) => {

@@ -1,60 +1,49 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { formatInTimeZone } from "date-fns-tz";
 import { Webhook as StibeeWebhook } from "../../../../utils/stibee";
+import { INTERACT_CHANNEL_CODE, INTERACT_TYPE_CODE } from "@/utils/donus";
+import { Partner } from "@/partners";
+import { submitMember, submitInteract } from "@/partners/donus";
 import {
-  INTERACT_CHANNEL_CODE,
-  INTERACT_TYPE_CODE,
-  submitInteract,
-  submitMember,
-} from "../../../../utils/donus";
+  getDonusNewsletterCodeByPartner,
+  getDonusNewsletterTitleByPartner,
+} from "@/partners/constants";
 
 const { GREENKOREA_DONUS_FORM_KEY, API_TOKEN } = process.env;
 
-enum GREENPEACE_NEWSLETTER_ID {
-  GREENHOPE = "223567",
-  SOSSOSO = "70929",
-  WILDLETTER = "243656",
-  CLIMATELETTER = "220694",
-  CIRCULARLETTER = "142812",
+function getDonusFormKeyByPartner(partner: Partner): string {
+  switch (partner) {
+    case Partner.GREENKOREA:
+      return GREENKOREA_DONUS_FORM_KEY;
+    default:
+      throw new Error("지원하지 않는 조직입니다.");
+  }
 }
-
-const GREENPEACE_NEWSLETTER_DONUS_REGISTER_CODE: {
-  [key in GREENPEACE_NEWSLETTER_ID]: "H1" | "H2" | "H3" | "H4" | "H5";
-} = {
-  [GREENPEACE_NEWSLETTER_ID.GREENHOPE]: "H1",
-  [GREENPEACE_NEWSLETTER_ID.SOSSOSO]: "H2",
-  [GREENPEACE_NEWSLETTER_ID.WILDLETTER]: "H3",
-  [GREENPEACE_NEWSLETTER_ID.CLIMATELETTER]: "H4",
-  [GREENPEACE_NEWSLETTER_ID.CIRCULARLETTER]: "H5",
-};
-
-const GREENPEACE_NEWSLETTER_TITLE: {
-  [key in GREENPEACE_NEWSLETTER_ID]: string;
-} = {
-  [GREENPEACE_NEWSLETTER_ID.GREENHOPE]: "녹색희망",
-  [GREENPEACE_NEWSLETTER_ID.SOSSOSO]: "소소사소",
-  [GREENPEACE_NEWSLETTER_ID.WILDLETTER]: "야생레터",
-  [GREENPEACE_NEWSLETTER_ID.CLIMATELETTER]: "기후레터",
-  [GREENPEACE_NEWSLETTER_ID.CIRCULARLETTER]: "순환레터",
-};
 
 export default async function userHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { type, token } = req.query as {
-    type: GREENPEACE_NEWSLETTER_ID;
+  const {
+    partner,
+    type: newsletterId,
+    token,
+  } = req.query as {
+    partner: Partner;
+    type: string;
     token: string;
   };
 
   const body: StibeeWebhook = req.body;
   const method = req.method;
-  const formKey = GREENKOREA_DONUS_FORM_KEY;
 
-  const newsletterTitle =
-    GREENPEACE_NEWSLETTER_TITLE[type as GREENPEACE_NEWSLETTER_ID];
-  const newsletterCode =
-    GREENPEACE_NEWSLETTER_DONUS_REGISTER_CODE[type as GREENPEACE_NEWSLETTER_ID];
+  const newsletterTitle = getDonusNewsletterTitleByPartner({
+    newsletterId,
+    partner,
+  });
+  const newsletterCode = getDonusNewsletterCodeByPartner({
+    newsletterId,
+    partner,
+  });
 
   if (token !== API_TOKEN) {
     res.status(401).json({ message: "Unauthorized" });
@@ -100,38 +89,35 @@ export default async function userHandler(
   //   res.status(200).json({});
   // }
 
+  const formKey = getDonusFormKeyByPartner(partner);
+
   switch (method) {
     case "POST":
       const { action, subscribers } = body;
       switch (action) {
         case "SUBSCRIBED": {
           const result = await submitMember({
+            partner,
             formKey,
-            updateOnMatch: false,
-            members: [
-              {
-                name: subscribers[0].name,
-                email: subscribers[0].email,
-                memo: "Green Korea Newsletter",
-              },
-            ],
+            body: {
+              name: subscribers[0].name,
+              email: subscribers[0].email,
+            },
           });
 
           const member = result.data.members[0];
 
           await submitInteract({
+            partner,
             formKey: GREENKOREA_DONUS_FORM_KEY,
-            memberIdx: member.memberIdx,
-            interactTypeCode: INTERACT_TYPE_CODE.PARTICIPATION,
-            interactDate: formatInTimeZone(
-              new Date(),
-              "Asia/Seoul",
-              "yyyy-MM-dd"
-            ),
-            interactCategoryCode: newsletterCode,
-            interactChannelCode: INTERACT_CHANNEL_CODE.EMAIL,
-            title: `${newsletterTitle} 구독신청`,
-            description: `구독자 이름 ${subscribers[0].name}`,
+            body: {
+              memberIdx: member.memberIdx,
+              interactTypeCode: INTERACT_TYPE_CODE.PARTICIPATION,
+              interactCategoryCode: newsletterCode,
+              interactChannelCode: INTERACT_CHANNEL_CODE.EMAIL,
+              newsletterTitle: newsletterTitle,
+              subscriberName: subscribers[0].name,
+            },
           });
 
           break;
