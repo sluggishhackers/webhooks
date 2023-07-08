@@ -21,6 +21,9 @@ type SUBMIT_MEMBER_PARAMS =
         name: string;
         email: string;
       };
+    }
+  | {
+      partner: Partner.BTOB;
     };
 
 type SUBMIT_INTERACT_PARAMS =
