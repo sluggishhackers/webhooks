@@ -50,6 +50,9 @@ type SUBMIT_INTERACT_PARAMS =
         newsletterTitle: string;
         subscriberName: string;
       };
+    }
+  | {
+      partner: Partner.BTOB;
     };
 
 export const submitMember = (params: SUBMIT_MEMBER_PARAMS) => {
@@ -85,5 +88,7 @@ export const submitInteract = async (params: SUBMIT_INTERACT_PARAMS) => {
         description: `구독자 이름 ${params.body.subscriberName}`,
       });
     }
+    default:
+      break;
   }
 };
