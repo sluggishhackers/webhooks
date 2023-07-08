@@ -128,3 +128,12 @@ export function getDonusInteractTypeCode({
 /**
  * STIBEE
  */
+
+export const getStibeeApiKey = ({ partner }: { partner: Partner }) => {
+  switch (partner) {
+    case Partner.BTOB:
+      return process.env.BTOB_STIBEE_API_KEY;
+    default:
+      return "";
+  }
+};
